@@ -1,5 +1,11 @@
 package message;
 
+/**
+ * Classe contenant des constantes utiles lors des échanges entre le client et le serveur
+ * 
+ * @author Jessica CHERRUAU
+ *
+ */
 public class Message {
 
 	// Codes à l'identification
@@ -8,6 +14,7 @@ public class Message {
 	public static final int WRONG_PWD = 2;
 	public static final int SIGNIN_ABORT = 3;
 	
+	// textes correspondant aux codes d'erreur
 	public static final String[] txtCodes = 
 		{
 			"Vous êtes connecté !",
