@@ -105,7 +105,7 @@ public class Client extends Thread{
 		// la liste retournée est une HashMap (clé valeur) ou la clé est l'index dans le 
 		// tableau des chatrooms du serveur et la valeur est le thème choisi
 		@SuppressWarnings("unchecked")
-		HashMap<Integer, String> crooms = (HashMap<Integer, String>) reader.readObject();
+		HashMap<Integer, String> crooms = receiveChatroomList();
 		
 		
 		// le client donne le numéro de la chatroom qu'il souhaite
@@ -162,6 +162,30 @@ public class Client extends Thread{
 		else
 			return false;
 	}
+	
+	public boolean chooseChatroom(int numero) throws IOException, ClassNotFoundException {
+		// on envoie le numéro et le theme, la création où l'affectation à une chatroom
+		// sera traité par le serveur
+		writer.writeObject(numero);
+		writer.writeObject("");
+		
+		// on reçoit la réponse du serveur
+		int response = (Integer) reader.readObject();
+		if(response == Message.CONNECTED)
+			return true;
+		else
+			return false;
+	}
+
+	public HashMap<Integer, String> receiveChatroomList() {
+		try {
+			return (HashMap<Integer, String>) reader.readObject();
+		} catch (ClassNotFoundException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
 
 	/**
 	 * Déconnecte un client : ferme la socket et les flux
@@ -178,7 +202,7 @@ public class Client extends Thread{
 
 	/**
 	 * Permet à un client de s'identifier, il doit communiquer au serveur son nom et 
-	 * son mot de passe
+	 * son mot de passe. For the console application
 	 * Si le nom n'est pas connu on lui propose de créer un compte
 	 * @param sc Scanner pour les saisies claviers
 	 * @return true si le client est identifié, false si mot de passe incorrect ou si
@@ -227,6 +251,53 @@ public class Client extends Thread{
 			}
 		} while(codeRetour == Message.UNKNOWN_USER);
 		return true;
+	}
+	
+	/**
+	 * Permet à un client de s'identifier, il doit communiquer au serveur son nom et 
+	 * son mot de passe. For the GUI application
+	 * @param nom user login 
+	 * @param mdp user password
+	 * @return return code message if the user has been authentified
+	 */
+	public int identification(String nom, String mdp){
+		try {
+			writer.writeObject(nom);		 // client name
+			writer.writeObject(mdp);
+		} catch (IOException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+		int codeRetour = Message.WRONG_PWD;
+			//attente de la réponse d'authentification
+			try {
+				//reception d'un code correspondant au résultat de l'identification
+				codeRetour = (Integer) reader.readObject();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return codeRetour;
+	}
+	
+	public int accountCreation(String ret){
+		int codeRetour = -1;
+		try {
+			writer.writeObject(ret);
+		
+			//reception d'un code correspondant au résultat de l'identification
+			codeRetour = (Integer) reader.readObject();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return codeRetour;
 	}
 	
 	/**
