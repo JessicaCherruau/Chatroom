@@ -50,9 +50,7 @@ public class Server extends Thread{
 			saveSubscribers();
 			
 			//déconnexion de toutes les sessions de toutes les chatrooms
-			Iterator<ChatRoom> it = crooms.iterator();
-			while(it.hasNext()){
-				ChatRoom cr = it.next();
+			for (ChatRoom cr : crooms) {
 				cr.broadcast("Fermeture du serveur. Déconnexion");
 				cr.closeAllSessions();
 			}
@@ -197,12 +195,10 @@ public class Server extends Thread{
 	 * @param elem message à transmettre
 	 */
 	public static synchronized void transmitToChatRoom(int idSession, String elem){
-		Iterator<ChatRoom> it = Server.crooms.iterator();
 		//on parcourt toutes les chatrooms
-		while(it.hasNext()){
-			ChatRoom cr = it.next();
-			if(cr.haveSession(idSession)){
-				System.out.println("Message transmis à "+cr.getTheme());
+		for (ChatRoom cr : Server.crooms) {
+			if (cr.haveSession(idSession)) {
+				System.out.println("Message transmis à " + cr.getTheme());
 				//on ajoute le message dans la file de la chatroom
 				cr.putInQueue(elem);
 				break;

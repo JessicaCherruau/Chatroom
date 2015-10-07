@@ -36,10 +36,7 @@ public class Client extends Thread{
 			writer = new ObjectOutputStream(socket.getOutputStream());
 		} catch (IOException ioe) {
 
-			System.err.println("Connection failed"); 
-
-			return;
-
+			System.err.println("Connection failed");
 		}
 	}
 	
@@ -115,9 +112,7 @@ public class Client extends Thread{
 		do{
 			System.out.println("Quel chatroom souhaiter vous rejoindre ? Envoyez le numéro ou NEW pour créer une nouvelle");
 			// on affiche les choix au client
-			Iterator<Entry<Integer, String>> it = crooms.entrySet().iterator();
-			while(it.hasNext()){
-				Entry<Integer, String> pair = (Entry<Integer, String>) it.next();
+			for (Entry<Integer, String> pair : crooms.entrySet()) {
 				System.out.println(pair.getKey() + " : " + pair.getValue());
 			}
 			
@@ -157,10 +152,7 @@ public class Client extends Thread{
 		
 		// on reçoit la réponse du serveur
 		int response = (Integer) reader.readObject();
-		if(response == Message.CONNECTED)
-			return true;
-		else
-			return false;
+		return (response == Message.CONNECTED);
 	}
 	
 	public boolean chooseChatroom(int numero) throws IOException, ClassNotFoundException {
@@ -171,10 +163,7 @@ public class Client extends Thread{
 		
 		// on reçoit la réponse du serveur
 		int response = (Integer) reader.readObject();
-		if(response == Message.CONNECTED)
-			return true;
-		else
-			return false;
+		return (response == Message.CONNECTED);
 	}
 
 	public HashMap<Integer, String> receiveChatroomList() {

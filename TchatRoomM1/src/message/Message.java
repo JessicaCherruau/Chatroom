@@ -22,7 +22,4 @@ public class Message {
 			"Mauvais mot de passe, déconnexion",
 			"Abandon de la création de compte, déconnexion"
 		};
-	public Message(){
-		
-	}
 }

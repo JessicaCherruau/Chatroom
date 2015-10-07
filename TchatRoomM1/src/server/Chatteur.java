@@ -45,13 +45,8 @@ public class Chatteur implements Serializable {
 	public boolean equals(Object obj) {
 		if (obj.getClass().equals(Chatteur.class)){
 			Chatteur c = (Chatteur) obj;
-			if(c.getSession().getIdSession() == this.session.getIdSession())
-					if(c.name.equals(this.name))
-						return true;
-					else
-						return false;
-			else
-				return false;
+			return (c.getSession().getIdSession() == this.session.getIdSession())
+						&& c.name.equals(this.name);
 		}
 		else
 			return false;

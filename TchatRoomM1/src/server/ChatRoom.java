@@ -2,7 +2,6 @@ package server;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
@@ -74,7 +73,7 @@ public class ChatRoom extends Thread{
 
 	/**
 	 * Ajouter un chatteur à la chatroom
-	 * @param chatteur
+	 * @param chatteur chatteur à ajouter
 	 */
 	public void addChatteur(Chatteur chatteur) {
 		synchronized(chatters){
@@ -111,11 +110,9 @@ public class ChatRoom extends Thread{
 	 * @return true si la session appartient bien à cette chatroom
 	 */
 	public boolean haveSession(int idSession) {
-		Iterator<Chatteur> it = chatters.iterator();
-		while (it.hasNext()){
-			Chatteur c = it.next();
+		for (Chatteur c : chatters) {
 			// les id de sessions sont uniques
-			if(c.getSession().getIdSession() == idSession)
+			if (c.getSession().getIdSession() == idSession)
 				return true;
 		}
 		return false;
@@ -134,25 +131,20 @@ public class ChatRoom extends Thread{
 	 * Utile lors de la fermeture du serveur
 	 */
 	public void closeAllSessions(){
-		Iterator<Chatteur> it = this.chatters.iterator();
-		while(it.hasNext()){
-			Chatteur c = it.next();
+		for (Chatteur c : this.chatters) {
 			c.getSession().disconnect();
 		}
 	}
 	
 	/**
 	 * Retourne la liste des noms des chatteurs présents dans la chatroom
-	 * @return
+	 * @return liste des noms des chatteurs présents dans un string
 	 */
 	public String listOfChatters(){
-		Iterator<Chatteur> it = null;
 		String list = "*** ";
 		synchronized(this.chatters){
-			it = this.chatters.iterator();
-		}
-		while(it.hasNext()){
-			list += it.next().getName() + ", ";
+			for(Chatteur chatter : this.chatters)
+				list += chatter.getName() + ", ";
 		}
 		list += " ***";
 		return list;

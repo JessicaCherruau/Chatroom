@@ -222,7 +222,7 @@ public class Session extends Thread{
 	
 	/**
 	 * Obtenir l'id de session
-	 * @return
+	 * @return id de session
 	 */
 	public int getIdSession(){
 		return this.idSession;
