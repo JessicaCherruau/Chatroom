@@ -1,5 +1,7 @@
-/bin
-/.settings
-/.idea
+/bin/*
+/.settings/*
+/.idea/*
+/subscribers.txt
+/TchatRoomM1.iml
 /.project
 /.classpath
