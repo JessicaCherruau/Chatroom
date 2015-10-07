@@ -60,18 +60,18 @@ public class ClientUI extends JFrame {
 			//get content from textboxes
 			String name = connectPane.getLogin();
 			String mdp = connectPane.getPassword();
-			int authentification = c.identification(name, mdp);
-			if(authentification == Message.UNKNOWN_USER){
-				authentification = JOptionPane.showConfirmDialog(frame,
+			int authentication = c.identification(name, mdp);
+			if(authentication == Message.UNKNOWN_USER){
+				authentication = JOptionPane.showConfirmDialog(frame,
 					    "Vous n'avez pas encore de compte.\n"
 					    + "Voulez-vous le créer avec les informations entrées précédemment ?\n",
 					    "Création de compte",
 					    JOptionPane.YES_NO_OPTION);
-				String reply = (authentification == JOptionPane.YES_OPTION) ? "O" : "N";
-				authentification = c.accountCreation(reply);
+				String reply = (authentication == JOptionPane.YES_OPTION) ? "O" : "N";
+				authentication = c.accountCreation(reply);
 			}
-			connectPane.setAuthInformation(Message.txtCodes[authentification]);
-			if(authentification == Message.CONNECTED){
+			connectPane.setAuthInformation(Message.txtCodes[authentication]);
+			if(authentication == Message.CONNECTED){
 				//if  the user is connected, he can access to the list of the chatroom, sent by the session
 				HashMap<Integer, String> list = c.receiveChatroomList();
 				chatPane = new ChatroomPanel();
@@ -97,7 +97,10 @@ public class ClientUI extends JFrame {
 		public void actionPerformed(ActionEvent arg0) {
 			try {
 				if(c.chooseChatroom(index)){
-					JOptionPane.showMessageDialog(frame, "Connecté");
+//					JOptionPane.showMessageDialog(frame, "Connecté");
+					TalkPanel talkPane = new TalkPanel();
+					chatPane.setVisible(false);
+					frame.setContentPane(talkPane);
 				}
 				else{
 					JOptionPane.showMessageDialog(frame, "Non Connecté");
