@@ -4,6 +4,8 @@ import client.ClientUI;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Graphic interface for the conversation between participants
@@ -11,20 +13,17 @@ import java.awt.*;
 public class TalkPanel extends JPanel{
     private JLabel lblBuddiesList;      //label containing the participants of the chatroom
     private JTextArea talkArea;         // contains the conversation
-    private JTextArea myMessageArea;    // input the message to send;
+    private JButton btnSend;
 
-    public static void main(String[] args) {
-        EventQueue.invokeLater(() -> {
-            try {
-                ClientUI frame1 = new ClientUI();
-                frame1.setVisible(true);
-                TalkPanel tp = new TalkPanel();
-                frame1.setContentPane(tp);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
+    public JTextArea getMyMessageArea() {
+        return myMessageArea;
     }
+
+    public JTextArea getTalkArea() {
+        return talkArea;
+    }
+
+    private JTextArea myMessageArea;    // input the message to send;
 
     public TalkPanel(){
         GridBagLayout gbl_this = new GridBagLayout();
@@ -46,13 +45,12 @@ public class TalkPanel extends JPanel{
 
         constraints.gridx = 0;
         constraints.gridy = 1;
-        talkArea = new JTextArea("lalalalalalalalalalalalalalalalalalalalalalalalalala");
+        talkArea = new JTextArea();
         talkArea.setColumns(30);
         talkArea.setRows(10);
         talkArea.setEditable(false);
         JScrollPane scrollPane = new JScrollPane(talkArea);
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-//        scrollPane.setBounds(10, 11, 455, 249);
         this.add(scrollPane, constraints);
 
         constraints.gridx = 0;
@@ -67,7 +65,11 @@ public class TalkPanel extends JPanel{
 
         constraints.gridx = 1;
         constraints.gridy = 2;
-        JButton btnSend = new JButton("Envoyer");
+        btnSend = new JButton("Envoyer");
         this.add(btnSend, constraints);
+    }
+
+    public void addSendListener(ActionListener sendListener) {
+        btnSend.addActionListener(sendListener);
     }
 }

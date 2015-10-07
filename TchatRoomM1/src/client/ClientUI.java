@@ -21,6 +21,7 @@ public class ClientUI extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private ConnectionPanel connectPane;
 	private ChatroomPanel chatPane;
+	private TalkPanel talkPane;
 	private JFrame frame;
 	Client c;
 
@@ -98,9 +99,11 @@ public class ClientUI extends JFrame {
 			try {
 				if(c.chooseChatroom(index)){
 //					JOptionPane.showMessageDialog(frame, "Connecté");
-					TalkPanel talkPane = new TalkPanel();
+					talkPane = new TalkPanel();
 					chatPane.setVisible(false);
 					frame.setContentPane(talkPane);
+					talkPane.addSendListener(new SendListener());
+					new Thread(new DisplayUpdater()).start();
 				}
 				else{
 					JOptionPane.showMessageDialog(frame, "Non Connecté");
@@ -110,6 +113,27 @@ public class ClientUI extends JFrame {
 			}
 		}
 		
+	}
+
+	private class SendListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			String message = talkPane.getMyMessageArea().getText();
+			c.send(message);
+			talkPane.getMyMessageArea().setText("");
+		}
+	}
+
+	private class DisplayUpdater implements Runnable{
+
+		@Override
+		public void run() {
+			while(true){
+				String message = c.receive();
+				talkPane.getTalkArea().setText(talkPane.getTalkArea().getText()+"\n"+message);
+			}
+		}
 	}
 
 }
